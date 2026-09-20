@@ -13,48 +13,69 @@
     </parent>
 
     <groupId>vn.hcmute</groupId>
-    <artifactId>springboot4-crud-admin-24162111</artifactId>
+    <artifactId>springboot4-graphql-thymeleaf-24162111</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>24162111_DoanThanhTam</name>
-    <description>Spring Boot 4 JSP/JSTL - REST API AJAX CRUD Category Product</description>
+    <name>Baitap08_05_24162111</name>
+
+    <description>
+        Spring Boot 4 - GraphQL - AJAX - Thymeleaf - Product Category
+    </description>
 
     <properties>
         <java.version>26</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
+
+        <project.reporting.outputEncoding>
+            UTF-8
+        </project.reporting.outputEncoding>
     </properties>
+
 
     <dependencies>
 
+        <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+
+        <!-- Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+
+        <!-- Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+
+        <!-- SQL Server -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
+
+        <!-- DevTools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -62,26 +83,36 @@
             <optional>true</optional>
         </dependency>
 
+
+        <!-- Embedded Tomcat -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
 
+
+        <!-- JSP -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
 
+
+        <!-- JSTL API -->
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
         </dependency>
 
+
+        <!-- JSTL Implementation -->
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
         </dependency>
 
+
+        <!-- JSP API -->
         <dependency>
             <groupId>jakarta.servlet.jsp</groupId>
             <artifactId>jakarta.servlet.jsp-api</artifactId>
@@ -89,24 +120,46 @@
             <scope>provided</scope>
         </dependency>
 
+
+        <!-- SiteMesh -->
         <dependency>
             <groupId>org.sitemesh</groupId>
             <artifactId>spring-boot-starter-sitemesh</artifactId>
             <version>3.3.0-RC1</version>
         </dependency>
 
+
+        <!-- Mail -->
         <dependency>
             <groupId>org.eclipse.angus</groupId>
             <artifactId>jakarta.mail</artifactId>
             <version>2.0.3</version>
         </dependency>
 
+
+        <!-- Swagger / OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.1.1</version>
         </dependency>
 
+
+        <!-- GraphQL -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+        </dependency>
+
+
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+
+        <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -115,26 +168,49 @@
 
     </dependencies>
 
+
     <build>
-        <finalName>24162111_DoanThanhTam</finalName>
+
+        <finalName>
+            Baitap08_05_24162111
+        </finalName>
 
         <plugins>
 
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <groupId>
+                    org.springframework.boot
+                </groupId>
+
+                <artifactId>
+                    spring-boot-maven-plugin
+                </artifactId>
 
                 <configuration>
+
                     <excludes>
+
                         <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
+
+                            <groupId>
+                                org.projectlombok
+                            </groupId>
+
+                            <artifactId>
+                                lombok
+                            </artifactId>
+
                         </exclude>
+
                     </excludes>
+
                 </configuration>
+
             </plugin>
 
         </plugins>
+
     </build>
 
 </project>
