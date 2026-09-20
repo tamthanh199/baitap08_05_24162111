@@ -64,6 +64,30 @@ type CategoryPage {
 }
 
 
+input CategoryInput {
+
+    categoryName: String!
+
+    icon: String
+
+    status: Int
+}
+
+
+input ProductInput {
+
+    productName: String!
+
+    description: String
+
+    price: Float!
+
+    image: String
+
+    categoryId: Int!
+}
+
+
 type Query {
 
     hello: String!
@@ -95,4 +119,35 @@ type Query {
         page: Int
         size: Int
     ): CategoryPage!
+}
+
+
+type Mutation {
+
+    createCategory(
+        input: CategoryInput!
+    ): Category!
+
+    updateCategory(
+        id: Int!
+        input: CategoryInput!
+    ): Category
+
+    deleteCategory(
+        id: Int!
+    ): Boolean!
+
+
+    createProduct(
+        input: ProductInput!
+    ): Product!
+
+    updateProduct(
+        id: Int!
+        input: ProductInput!
+    ): Product
+
+    deleteProduct(
+        id: Int!
+    ): Boolean!
 }
