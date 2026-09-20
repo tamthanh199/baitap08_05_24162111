@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1">
+
+    <title>
+        GraphQL Home
+    </title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <style>
+
+        body {
+
+            background:
+                #1f2226;
+
+            color:
+                #f5f5f5;
+
+            min-height:
+                100vh;
+        }
+
+
+        .navbar {
+
+            background:
+                #212529;
+        }
+
+
+        .main-container {
+
+            max-width:
+                1300px;
+
+            margin:
+                35px auto;
+
+            padding:
+                0 20px;
+        }
+
+
+        .content-box {
+
+            background:
+                #111;
+
+            border-radius:
+                18px;
+
+            padding:
+                30px;
+        }
+
+
+        .product-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(240px, 1fr)
+                );
+
+            gap:
+                20px;
+
+            margin-top:
+                25px;
+        }
+
+
+        .product-card {
+
+            background:
+                #181818;
+
+            border:
+                1px solid #3a3a3a;
+
+            border-radius:
+                14px;
+
+            overflow:
+                hidden;
+
+            transition:
+                0.2s;
+        }
+
+
+        .product-card:hover {
+
+            transform:
+                translateY(-3px);
+        }
+
+
+        .product-image {
+
+            width:
+                100%;
+
+            height:
+                190px;
+
+            object-fit:
+                cover;
+
+            background:
+                #2a2a2a;
+        }
+
+
+        .no-image {
+
+            width:
+                100%;
+
+            height:
+                190px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            background:
+                #2a2a2a;
+
+            color:
+                #aaa;
+        }
+
+
+        .product-body {
+
+            padding:
+                18px;
+        }
+
+
+        .product-name {
+
+            font-size:
+                21px;
+
+            font-weight:
+                600;
+        }
+
+
+        .product-price {
+
+            color:
+                #5dd879;
+
+            font-size:
+                20px;
+
+            font-weight:
+                700;
+
+            margin-top:
+                10px;
+        }
+
+
+        .category-name {
+
+            color:
+                #aaa;
+        }
+
+
+        .description {
+
+            color:
+                #ccc;
+
+            margin-top:
+                8px;
+
+            min-height:
+                45px;
+        }
+
+
+        footer {
+
+            text-align:
+                center;
+
+            padding:
+                25px;
+
+            color:
+                #ccc;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+    <div class="container-fluid px-4">
+
+        <a
+            class="navbar-brand fw-bold"
+            href="/graphql-ui/home">
+
+            WEBPR330479 - GraphQL
+
+        </a>
+
+
+        <div class="navbar-nav">
+
+            <a
+                class="nav-link active"
+                href="/graphql-ui/home">
+
+                Home GraphQL
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<div class="main-container">
+
+    <div class="content-box">
+
+
+        <div
+            class="d-flex
+                   flex-column
+                   flex-md-row
+                   justify-content-between
+                   align-items-md-center
+                   gap-3">
+
+            <div>
+
+                <h1 class="mb-2">
+                    Sản phẩm
+                </h1>
+
+                <p class="text-secondary mb-0">
+
+                    Dữ liệu được lấy bằng
+                    GraphQL và render bằng AJAX.
+
+                </p>
+
+            </div>
+
+
+            <div style="min-width: 280px;">
+
+                <label
+                    for="categoryFilter"
+                    class="form-label">
+
+                    Lọc theo Category
+
+                </label>
+
+
+                <select
+                    id="categoryFilter"
+                    class="form-select">
+
+                    <option value="">
+                        Tất cả sản phẩm
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <hr class="my-4">
+
+
+        <div
+            id="messageBox"
+            class="alert alert-danger d-none">
+        </div>
+
+
+        <div
+            id="loadingBox"
+            class="text-center py-5">
+
+            Đang tải dữ liệu...
+
+        </div>
+
+
+        <div
+            id="productGrid"
+            class="product-grid">
+        </div>
+
+
+        <div
+            id="emptyBox"
+            class="text-center text-secondary py-5 d-none">
+
+            Không có sản phẩm.
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    24162111 - Đoàn Thành Tâm
+
+</footer>
+
+
+<script>
+
+    const GRAPHQL_URL =
+        "/graphql";
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            loadCategories();
+
+            loadProductsByPriceAsc();
+
+
+            document
+                .getElementById(
+                    "categoryFilter"
+                )
+                .addEventListener(
+                    "change",
+                    function () {
+
+                        const categoryId =
+                            this.value;
+
+
+                        if (
+                            categoryId === ""
+                        ) {
+
+                            loadProductsByPriceAsc();
+
+                        } else {
+
+                            loadProductsByCategory(
+                                Number(
+                                    categoryId
+                                )
+                            );
+                        }
+                    }
+                );
+        }
+    );
+
+    async function graphqlRequest(
+            query,
+            variables) {
+
+        const response =
+            await fetch(
+                GRAPHQL_URL,
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            {
+
+                                query:
+                                    query,
+
+                                variables:
+                                    variables || {}
+                            }
+                        )
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP "
+                + response.status
+            );
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            result.errors
+            && result.errors.length > 0
+        ) {
+
+            throw new Error(
+                result.errors[0].message
+            );
+        }
+
+
+        return result.data;
+    }
+
+    async function loadCategories() {
+
+        const query =
+
+            "query {"
+            + " categories {"
+            + "   categoryId"
+            + "   categoryName"
+            + "   status"
+            + " }"
+            + "}";
+
+
+        try {
+
+            const data =
+                await graphqlRequest(
+                    query
+                );
+
+
+            const select =
+                document.getElementById(
+                    "categoryFilter"
+                );
+
+
+            data.categories
+                .forEach(
+                    function (category) {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value =
+                            category.categoryId;
+
+
+                        option.textContent =
+                            category.categoryName;
+
+
+                        select.appendChild(
+                            option
+                        );
+                    }
+                );
+
+        } catch (error) {
+
+            showError(
+                "Không thể tải Category: "
+                + error.message
+            );
+        }
+    }
+
+    async function loadProductsByPriceAsc() {
+
+        startLoading();
+
+
+        const query =
+
+            "query {"
+            + " productsByPriceAsc {"
+            + "   productId"
+            + "   productName"
+            + "   description"
+            + "   price"
+            + "   image"
+            + "   category {"
+            + "       categoryId"
+            + "       categoryName"
+            + "   }"
+            + " }"
+            + "}";
+
+
+        try {
+
+            const data =
+                await graphqlRequest(
+                    query
+                );
+
+
+            renderProducts(
+                data.productsByPriceAsc
+            );
+
+        } catch (error) {
+
+            showError(
+                error.message
+            );
+
+            renderProducts(
+                []
+            );
+        }
+    }
+
+    async function loadProductsByCategory(
+            categoryId) {
+
+        startLoading();
+
+
+        const query =
+
+            "query ProductsByCategory($categoryId: Int!) {"
+            + " productsByCategory(categoryId: $categoryId) {"
+            + "   productId"
+            + "   productName"
+            + "   description"
+            + "   price"
+            + "   image"
+            + "   category {"
+            + "       categoryId"
+            + "       categoryName"
+            + "   }"
+            + " }"
+            + "}";
+
+
+        try {
+
+            const data =
+                await graphqlRequest(
+
+                    query,
+
+                    {
+                        categoryId:
+                            categoryId
+                    }
+                );
+
+
+            renderProducts(
+                data.productsByCategory
+            );
+
+        } catch (error) {
+
+            showError(
+                error.message
+            );
+
+            renderProducts(
+                []
+            );
+        }
+    }
+
+    function renderProducts(
+            products) {
+
+        const grid =
+            document.getElementById(
+                "productGrid"
+            );
+
+
+        const loadingBox =
+            document.getElementById(
+                "loadingBox"
+            );
+
+
+        const emptyBox =
+            document.getElementById(
+                "emptyBox"
+            );
+
+
+        loadingBox.classList
+            .add(
+                "d-none"
+            );
+
+
+        grid.innerHTML =
+            "";
+
+
+        if (
+            !products
+            || products.length === 0
+        ) {
+
+            emptyBox.classList
+                .remove(
+                    "d-none"
+                );
+
+            return;
+        }
+
+
+        emptyBox.classList
+            .add(
+                "d-none"
+            );
+
+
+        products.forEach(
+            function (product) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "product-card";
+
+
+                let imageHtml;
+
+
+                if (product.image) {
+
+                    imageHtml =
+
+                        "<img "
+                        + "class='product-image' "
+                        + "src='/product-image?fname="
+                        + encodeURIComponent(
+                            product.image
+                        )
+                        + "' "
+                        + "alt='Product'>";
+
+                } else {
+
+                    imageHtml =
+
+                        "<div class='no-image'>"
+                        + "Chưa có ảnh"
+                        + "</div>";
+                }
+
+
+                let categoryName =
+                    "";
+
+
+                if (
+                    product.category
+                    && product.category.categoryName
+                ) {
+
+                    categoryName =
+                        product.category
+                            .categoryName;
+                }
+
+
+                card.innerHTML =
+
+                    imageHtml
+
+                    + "<div class='product-body'>"
+
+                    + "<div class='product-name'>"
+                    + escapeHtml(
+                        product.productName
+                    )
+                    + "</div>"
+
+                    + "<div class='category-name'>"
+                    + "Category: "
+                    + escapeHtml(
+                        categoryName
+                    )
+                    + "</div>"
+
+                    + "<div class='description'>"
+                    + escapeHtml(
+                        product.description
+                        || ""
+                    )
+                    + "</div>"
+
+                    + "<div class='product-price'>"
+                    + formatPrice(
+                        product.price
+                    )
+                    + "</div>"
+
+                    + "</div>";
+
+
+                grid.appendChild(
+                    card
+                );
+            }
+        );
+    }
+
+    function startLoading() {
+
+        hideError();
+
+
+        document
+            .getElementById(
+                "loadingBox"
+            )
+            .classList
+            .remove(
+                "d-none"
+            );
+
+
+        document
+            .getElementById(
+                "emptyBox"
+            )
+            .classList
+            .add(
+                "d-none"
+            );
+
+
+        document
+            .getElementById(
+                "productGrid"
+            )
+            .innerHTML =
+                "";
+    }
+
+    function formatPrice(
+            value) {
+
+        if (
+            value === null
+            || value === undefined
+        ) {
+
+            return "";
+        }
+
+
+        return new Intl.NumberFormat(
+            "vi-VN"
+        ).format(
+            Number(value)
+        )
+        + " đ";
+    }
+
+    function showError(
+            message) {
+
+        const box =
+            document.getElementById(
+                "messageBox"
+            );
+
+
+        box.textContent =
+            message;
+
+
+        box.classList
+            .remove(
+                "d-none"
+            );
+    }
+
+
+    function hideError() {
+
+        document
+            .getElementById(
+                "messageBox"
+            )
+            .classList
+            .add(
+                "d-none"
+            );
+    }
+
+    function escapeHtml(
+            value) {
+
+        if (
+            value === null
+            || value === undefined
+        ) {
+
+            return "";
+        }
+
+
+        return String(value)
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+    }
+
+</script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>
