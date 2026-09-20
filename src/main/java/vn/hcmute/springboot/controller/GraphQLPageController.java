@@ -11,4 +11,18 @@ public class GraphQLPageController {
 
         return "graphql/home";
     }
+
+
+    @GetMapping("/admin/graphql/categories")
+    public String categoryAdmin() {
+
+        return "graphql/categories";
+    }
+
+
+    @GetMapping("/admin/graphql/products")
+    public String productAdmin() {
+
+        return "graphql/products";
+    }
 }
