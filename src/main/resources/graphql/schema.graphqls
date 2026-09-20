@@ -1,3 +1,98 @@
+type Category {
+
+    categoryId: Int!
+
+    categoryName: String
+
+    icon: String
+
+    status: Int!
+}
+
+
+type Product {
+
+    productId: Int!
+
+    productName: String!
+
+    description: String
+
+    price: Float!
+
+    image: String
+
+    createdAt: String
+
+    category: Category
+}
+
+
+type ProductPage {
+
+    content: [Product!]!
+
+    page: Int!
+
+    size: Int!
+
+    totalElements: Int!
+
+    totalPages: Int!
+
+    first: Boolean!
+
+    last: Boolean!
+}
+
+
+type CategoryPage {
+
+    content: [Category!]!
+
+    page: Int!
+
+    size: Int!
+
+    totalElements: Int!
+
+    totalPages: Int!
+
+    first: Boolean!
+
+    last: Boolean!
+}
+
+
 type Query {
+
     hello: String!
+
+    productsByPriceAsc: [Product!]!
+
+    productsByCategory(
+        categoryId: Int!
+    ): [Product!]!
+
+    categories: [Category!]!
+
+    productById(
+        id: Int!
+    ): Product
+
+    categoryById(
+        id: Int!
+    ): Category
+
+    productPage(
+        keyword: String
+        page: Int
+        size: Int
+    ): ProductPage!
+
+    categoryPage(
+        keyword: String
+        page: Int
+        size: Int
+    ): CategoryPage!
 }

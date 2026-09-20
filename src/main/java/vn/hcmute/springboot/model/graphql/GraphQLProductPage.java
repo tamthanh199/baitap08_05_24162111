@@ -1,0 +1,178 @@
+package vn.hcmute.springboot.model.graphql;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import vn.hcmute.springboot.entity.Product;
+
+public class GraphQLProductPage {
+
+    private List<GraphQLProductModel>
+        content;
+
+    private int page;
+
+    private int size;
+
+    private long totalElements;
+
+    private int totalPages;
+
+    private boolean first;
+
+    private boolean last;
+
+
+    public GraphQLProductPage() {
+    }
+
+
+    public static GraphQLProductPage
+            fromPage(
+                Page<Product> productPage) {
+
+        GraphQLProductPage result =
+            new GraphQLProductPage();
+
+
+        result.setContent(
+
+            productPage
+                .getContent()
+                .stream()
+                .map(
+                    GraphQLProductModel
+                        ::fromEntity
+                )
+                .toList()
+        );
+
+
+        result.setPage(
+            productPage.getNumber()
+        );
+
+
+        result.setSize(
+            productPage.getSize()
+        );
+
+
+        result.setTotalElements(
+            productPage.getTotalElements()
+        );
+
+
+        result.setTotalPages(
+            productPage.getTotalPages()
+        );
+
+
+        result.setFirst(
+            productPage.isFirst()
+        );
+
+
+        result.setLast(
+            productPage.isLast()
+        );
+
+
+        return result;
+    }
+
+
+    public List<GraphQLProductModel>
+            getContent() {
+
+        return content;
+    }
+
+
+    public void setContent(
+            List<GraphQLProductModel>
+                content) {
+
+        this.content =
+            content;
+    }
+
+
+    public int getPage() {
+        return page;
+    }
+
+
+    public void setPage(
+            int page) {
+
+        this.page =
+            page;
+    }
+
+
+    public int getSize() {
+        return size;
+    }
+
+
+    public void setSize(
+            int size) {
+
+        this.size =
+            size;
+    }
+
+
+    public long getTotalElements() {
+        return totalElements;
+    }
+
+
+    public void setTotalElements(
+            long totalElements) {
+
+        this.totalElements =
+            totalElements;
+    }
+
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+
+    public void setTotalPages(
+            int totalPages) {
+
+        this.totalPages =
+            totalPages;
+    }
+
+
+    public boolean isFirst() {
+        return first;
+    }
+
+
+    public void setFirst(
+            boolean first) {
+
+        this.first =
+            first;
+    }
+
+
+    public boolean isLast() {
+        return last;
+    }
+
+
+    public void setLast(
+            boolean last) {
+
+        this.last =
+            last;
+    }
+}
